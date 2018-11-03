@@ -38,25 +38,29 @@ public class MainActivity extends AppCompatActivity
     private UrlLoader mLoader;
     private ProgressBar mProgressBar;
     private SwipeRefreshLayout mLayout;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         mProgressBar = findViewById(R.id.m_progress_bar);
         mLayout = findViewById(R.id.m_swipe);
-        mLayout.setOnRefreshListener(this);
         mWebView = findViewById(R.id.web_view);
         mWebView.setWebViewClient(mWebViewClient = new WebViewClient(this, this));
 
         mWebSettings = mWebView.getSettings();
         accelerationHardware();
+
+        swipeSetup();
         webViewSetup();
+        drawerSetup();
 
         mLoader = new UrlLoader(mWebView);
+        mLayout.setOnRefreshListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +73,7 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -78,10 +82,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void webViewSetup(){
+    private void webViewSetup() {
         mWebSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebSettings.setJavaScriptEnabled(true);
+    }
+
+    private void swipeSetup() {
+        mLayout.setColorSchemeColors(getResources()
+                .getColor(R.color.progress_start), getResources()
+                .getColor(R.color.progress_end));
     }
 
     private void accelerationHardware() {
@@ -99,6 +109,16 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         mLoader.loadBaseUrl();
+    }
+
+    private void drawerSetup() {
+        mToolbar.setClickable(true);
+        mToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLoader.loadBaseUrl();
+            }
+        });
     }
 
     @Override
@@ -149,7 +169,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.nav_ordinances:
                 mLoader.loadOrdinances();
                 break;
@@ -193,7 +213,7 @@ public class MainActivity extends AppCompatActivity
         mLayout.setRefreshing(false);
     }
 
-    private boolean isRefresh(){
+    private boolean isRefresh() {
         return mLayout.isRefreshing();
     }
 
