@@ -2,13 +2,18 @@ package com.jhoanes.example.websitedata.activities;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,20 +23,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 
 import com.jhoanes.example.websitedata.R;
-import com.jhoanes.example.websitedata.utils.UrlGenerator;
+import com.jhoanes.example.websitedata.loaders.UrlLoader;
 import com.jhoanes.example.websitedata.utils.WebViewClient;
 
-import static com.jhoanes.example.websitedata.utils.WebEndsPoint.BASE_URL;
-import static com.jhoanes.example.websitedata.utils.WebEndsPoint.ORDINANCES;
-
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, WebViewClient.OnPageWeb, SwipeRefreshLayout.OnRefreshListener {
 
     private WebView mWebView;
     private WebSettings mWebSettings;
     private WebViewClient mWebViewClient;
+    private UrlLoader mLoader;
+    private ProgressBar mProgressBar;
+    private SwipeRefreshLayout mLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +46,17 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mProgressBar = findViewById(R.id.m_progress_bar);
+        mLayout = findViewById(R.id.m_swipe);
+        mLayout.setOnRefreshListener(this);
         mWebView = findViewById(R.id.web_view);
-        mWebView.setWebViewClient(mWebViewClient = new WebViewClient(this));
+        mWebView.setWebViewClient(mWebViewClient = new WebViewClient(this, this));
+
         mWebSettings = mWebView.getSettings();
+        accelerationHardware();
+        webViewSetup();
+
+        mLoader = new UrlLoader(mWebView);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -64,11 +78,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     @SuppressLint("SetJavaScriptEnabled")
+    private void webViewSetup(){
+        mWebSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        mWebSettings.setJavaScriptEnabled(true);
+    }
+
+    private void accelerationHardware() {
+        if (isAccelerationHardwareAvailable())
+            mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        else
+            mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+    }
+
+    private boolean isAccelerationHardwareAvailable() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        mWebSettings.setJavaScriptEnabled(true);
-        mWebView.loadUrl(BASE_URL);
+        mLoader.loadBaseUrl();
     }
 
     @Override
@@ -115,26 +145,60 @@ public class MainActivity extends AppCompatActivity
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_ordinances) {
-            mWebView.loadUrl(UrlGenerator.getOrdenances());
-        } else if (id == R.id.nav_laws) {
-
-        } else if (id == R.id.nav_daily) {
-
-        } else if (id == R.id.nav_contract) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id){
+            case R.id.nav_ordinances:
+                mLoader.loadOrdinances();
+                break;
+            case R.id.nav_laws:
+                mLoader.loadLaws();
+                break;
+            case R.id.nav_daily:
+                mLoader.loadDaily();
+                break;
+            case R.id.nav_contract:
+                mLoader.loadContracts();
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void showLoading() {
+        if (mProgressBar != null && !isRefresh()) mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        if (mProgressBar != null) mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showRefreshSwipe() {
+        //Do nothing...
+    }
+
+    @Override
+    public void hideRefreshSwipe() {
+        mLayout.setRefreshing(false);
+    }
+
+    private boolean isRefresh(){
+        return mLayout.isRefreshing();
+    }
+
+    @Override
+    public void onRefresh() {
+        mLoader.refresh();
     }
 }
