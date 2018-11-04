@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
@@ -106,6 +107,19 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         mLoader.loadBaseUrl();
+        scrollSetup();
+    }
+
+    private void scrollSetup(){
+        mLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if(mWebView.getScrollY() == 0)
+                    mLayout.setEnabled(true);
+                else
+                    mLayout.setEnabled(false);
+            }
+        });
     }
 
     private void drawerSetup() {
