@@ -11,7 +11,10 @@ import android.webkit.WebView;
 
 import java.util.Objects;
 
-import static com.jhoanes.example.websitedata.utils.WebEndsPoint.RODOLFO_FERNANDES_RN_GOV_BR;
+import static com.jhoanes.example.websitedata.utils.WebEndsPoint.NFSE_BASE_URL;
+import static com.jhoanes.example.websitedata.utils.WebEndsPoint.PERSONAL_SECTOR_URL_BASE_URL;
+import static com.jhoanes.example.websitedata.utils.WebEndsPoint.RODOLFO_FERNANDES_RN_GOV_BR_BASE_URL;
+import static com.jhoanes.example.websitedata.utils.WebEndsPoint.TRANSPARENCY_BASE_URL;
 
 public class WebViewClient extends android.webkit.WebViewClient {
 
@@ -34,7 +37,10 @@ public class WebViewClient extends android.webkit.WebViewClient {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        if(Objects.requireNonNull(request.getUrl().getHost()).equals(RODOLFO_FERNANDES_RN_GOV_BR)
+        if((Objects.requireNonNull(request.getUrl().getHost()).equals(RODOLFO_FERNANDES_RN_GOV_BR_BASE_URL)
+                || Objects.requireNonNull(request.getUrl().getHost().equals(PERSONAL_SECTOR_URL_BASE_URL))
+                || Objects.requireNonNull(request.getUrl().getHost().equals(TRANSPARENCY_BASE_URL))
+                || Objects.requireNonNull(request.getUrl().getHost().equals(NFSE_BASE_URL)))
                 && !request.getUrl().toString().endsWith(PDF)){
             return false;
         }

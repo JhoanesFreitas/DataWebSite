@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ordinances">Portarias</string>
+    <string name="laws">Leis</string>
+    <string name="daily">Diárias</string>
+    <string name="contracts">Contratos</string>
+    <string name="communicate">Comunicação</string>
+    <string name="share">Compartilhar</string>
+    <string name="contact">Contato</string>
+    <string name="decrees">Decretos</string>
+    <string name="biddings">Licitações</string>
+    <string name="services">Serviços</string>
+    <string name="invoice">Nota fiscal eletrônica</string>
+    <string name="diary">Diário Oficial</string>
+</resources>

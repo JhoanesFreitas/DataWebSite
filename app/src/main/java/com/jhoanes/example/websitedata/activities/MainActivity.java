@@ -2,11 +2,8 @@ package com.jhoanes.example.websitedata.activities;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -34,7 +31,6 @@ public class MainActivity extends AppCompatActivity
 
     private WebView mWebView;
     private WebSettings mWebSettings;
-    private WebViewClient mWebViewClient;
     private UrlLoader mLoader;
     private ProgressBar mProgressBar;
     private SwipeRefreshLayout mLayout;
@@ -50,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         mProgressBar = findViewById(R.id.m_progress_bar);
         mLayout = findViewById(R.id.m_swipe);
         mWebView = findViewById(R.id.web_view);
-        mWebView.setWebViewClient(mWebViewClient = new WebViewClient(this, this));
+        mWebView.setWebViewClient(new WebViewClient(this, this));
 
         mWebSettings = mWebView.getSettings();
         accelerationHardware();
@@ -79,6 +75,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -168,6 +165,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        item.setCheckable(false);
 
         switch (id) {
             case R.id.nav_ordinances:
@@ -181,6 +179,21 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_contract:
                 mLoader.loadContracts();
+                break;
+            case R.id.nav_decrees:
+                mLoader.loadDecrees();
+                break;
+            case R.id.nav_bidding:
+                mLoader.loadBidding();
+                break;
+            case R.id.nav_counter_check:
+                mLoader.loadCounterCheck();
+                break;
+            case R.id.nav_invoice:
+                mLoader.loadNFSE();
+                break;
+            case R.id.nav_diary:
+                mLoader.loadDiary();
                 break;
             case R.id.nav_share:
                 break;

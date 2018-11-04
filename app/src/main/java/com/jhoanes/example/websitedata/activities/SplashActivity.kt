@@ -1,5 +1,6 @@
 package com.jhoanes.example.websitedata.activities
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Intent
 import android.os.Build
@@ -18,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_splash.*
 class SplashActivity : AppCompatActivity() {
 
     private val mHideHandler = Handler()
+    @SuppressLint("InlinedApi")
     private val mHidePart2Runnable = Runnable {
         // Delayed removal of status and navigation bar
 

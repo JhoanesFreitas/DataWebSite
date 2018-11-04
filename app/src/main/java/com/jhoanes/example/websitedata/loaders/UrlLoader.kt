@@ -2,7 +2,7 @@ package com.jhoanes.example.websitedata.loaders
 
 import android.webkit.WebView
 import com.jhoanes.example.websitedata.utils.UrlGenerator
-import com.jhoanes.example.websitedata.utils.WebEndsPoint.BASE_URL
+import com.jhoanes.example.websitedata.utils.WebEndsPoint.FULL_URL
 
 class UrlLoader(webView: WebView) {
     private var mWebView : WebView = webView
@@ -14,7 +14,7 @@ class UrlLoader(webView: WebView) {
     }
 
     fun loadBaseUrl(){
-        loadUrl(BASE_URL)
+        loadUrl(FULL_URL)
     }
 
     fun loadOrdinances(){
@@ -31,6 +31,30 @@ class UrlLoader(webView: WebView) {
 
     fun loadContracts(){
         loadUrl(UrlGenerator.getContracts())
+    }
+
+    fun loadDecrees(){
+        loadUrl(UrlGenerator.getDecrees())
+    }
+
+    fun loadBidding(){
+        loadUrl(UrlGenerator.getBidding())
+    }
+
+    fun loadCounterCheck(){
+        loadUrl(UrlGenerator.getCounterCheck())
+    }
+
+    fun loadTransparence(){
+        loadUrl(UrlGenerator.getTransparency())
+    }
+
+    fun loadNFSE(){
+        loadUrl(UrlGenerator.getNFSE())
+    }
+
+    fun loadDiary(){
+        loadUrl(UrlGenerator.getDiary())
     }
 
     fun refresh(){
