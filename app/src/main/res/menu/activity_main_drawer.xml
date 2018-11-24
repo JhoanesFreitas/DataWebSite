@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_ordinances"
+            android:icon="@drawable/ic_book"
+            android:title="@string/ordinances" />
+        <item
+            android:id="@+id/nav_laws"
+            android:icon="@drawable/ic_book_open"
+            android:title="@string/laws" />
+        <item
+            android:id="@+id/nav_decrees"
+            android:icon="@drawable/ic_gavel"
+            android:title="@string/decrees"/>
+        <item
+            android:id="@+id/nav_daily"
+            android:icon="@drawable/ic_checkbook"
+            android:title="@string/daily" />
+        <item
+            android:id="@+id/nav_contract"
+            android:icon="@drawable/ic_book_lock"
+            android:title="@string/contracts" />
+
+        <item
+            android:id="@+id/nav_bidding"
+            android:icon="@drawable/ic_attachment"
+            android:title="@string/biddings"/>
+
+        <item
+            android:id="@+id/nav_diary"
+            android:icon="@drawable/ic_library_books"
+            android:title="@string/diary" />
+    </group>
+
+    <item android:title="@string/services">
+        <menu>
+            <item
+                android:id="@+id/nav_counter_check"
+                android:icon="@drawable/ic_file_check"
+                android:title="@string/counter_check"/>
+
+            <item
+                android:id="@+id/nav_invoice"
+                android:icon="@drawable/ic_credit_card_settings"
+                android:title="@string/invoice" />
+        </menu>
+    </item>
+
+    <item android:title="@string/communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/contact" />
+        </menu>
+    </item>
+
+</menu>

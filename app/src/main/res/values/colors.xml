@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#004685</color>
+    <color name="colorPrimaryDark">#3b5998</color>
+    <color name="colorAccent">#b31217</color>
+    <color name="progress_start">#f44242</color>
+    <color name="progress_end">#1395c4</color>
+    <color name="caju_software_colorPrimary">#0099cc</color>
+    <color name="black_overlay">#66000000</color>
+</resources>
